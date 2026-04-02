@@ -376,6 +376,7 @@ fn main() {
 ```
 
 ここで重要なのは、`impl Point` の中にある関数が2種類あることです。
+    546 +### よくある誤解
 
 - `Point::new(...)` のように `self` を受け取らないもの: 関連関数
 - `p.norm1()` のように `self` を受け取るもの: メソッド
@@ -577,13 +578,40 @@ enum Value {
     Float(f32),
 }
 
-fn print_value(v: Value) {
+fn print_value(v: &Value) {
     match v {
         Value::Int(i) => println!("int: {i}"),
         Value::Float(f) => println!("float: {f}"),
     }
 }
+
+fn main() {
+    let a = Value::Int(42);
+    let b = Value::Float(3.14);
+
+    print_value(&a);
+    print_value(&b);
+
+    let values = vec![
+        Value::Int(10),
+        Value::Float(2.5),
+        Value::Int(-7),
+    ];
+
+    for v in &values {
+        print_value(v);
+    }
+}
 ```
+
+ここでの使い方は次の通りです。
+
+- `Value::Int(42)`: `Int` という種類の値を作る
+- `Value::Float(3.14)`: `Float` という種類の値を作る
+- `match v { ... }`: 種類ごとに分岐し、中に入っている値を取り出す
+
+`print_value` が `&Value` を受け取っているのは、読むだけで所有権を奪いたくないからです。
+もし `fn print_value(v: Value)` にすると、その関数を呼んだ時点で値はムーブされます。
 
 `enum` は「タグ付きunion」を安全にしたようなものです。
 しかも`match`で全パターンの処理を強制できます。
