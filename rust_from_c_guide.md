@@ -335,6 +335,9 @@ fn abs_diff(a: i32, b: i32) -> i32 {
 
 ## 10. `struct`: Cの`struct`に近いが、`impl`でメソッドを持てる
 
+Rustの `struct` 自体は、まずはCの `struct` とかなり近いです。
+大きな違いは、その型に対する関数を `impl` ブロックにまとめて書けることです。
+
 ```rust
 struct Point {
     x: i32,
@@ -342,27 +345,210 @@ struct Point {
 }
 
 impl Point {
+    fn new(x: i32, y: i32) -> Self {
+        Self { x, y }
+    }
+
     fn norm1(&self) -> i32 {
         self.x.abs() + self.y.abs()
+    }
+
+    fn translate(&mut self, dx: i32, dy: i32) {
+        self.x += dx;
+        self.y += dy;
+    }
+
+    fn into_tuple(self) -> (i32, i32) {
+        (self.x, self.y)
     }
 }
 
 fn main() {
-    let p = Point { x: 3, y: -4 };
+    let mut p = Point::new(3, -4);
+
     println!("{}", p.norm1());
+
+    p.translate(10, 20);
+
+    let t = p.into_tuple();
+    println!("{t:?}");
 }
 ```
 
-Cとの違い:
+ここで重要なのは、`impl Point` の中にある関数が2種類あることです。
 
-- `struct` に関連関数やメソッドを書ける
-- `self` によって所有/借用の形がはっきりする
+- `Point::new(...)` のように `self` を受け取らないもの: 関連関数
+- `p.norm1()` のように `self` を受け取るもの: メソッド
+
+### `self` は「今そのメソッドを呼んでいる値」
+
+最初は `self` を「C++ や Java の `this` に近いもの」と思ってよいです。
+ただしRustでは、これは隠れた魔法というより「特殊な書き方ができる第1引数」です。
+
+例えば:
+
+```rust
+p.norm1()
+```
+
+は感覚的には次とほぼ同じです。
+
+```rust
+Point::norm1(&p)
+```
+
+同様に:
+
+```rust
+p.translate(10, 20)
+```
+
+はだいたい次と同じです。
+
+```rust
+Point::translate(&mut p, 10, 20)
+```
+
+つまり `self` は、
+「このメソッドがどの値を対象にして動くのか」を表しています。
+
+### Cで書くとどう見えるか
+
+同じ考え方をC寄りに書くとこうです。
+
+```c
+struct Point {
+    int x;
+    int y;
+};
+
+int point_norm1(const struct Point *self) {
+    return abs(self->x) + abs(self->y);
+}
+
+void point_translate(struct Point *self, int dx, int dy) {
+    self->x += dx;
+    self->y += dy;
+}
+```
+
+Rustのメソッドは、かなりこの形に近いです。
+違うのは、「読み取り専用なのか」「書き換えるのか」「所有権を受け取るのか」を
+`self` の型で明示する点です。
+
+### `self` と `Self` は別物
+
+ここはかなり重要です。
+
+- `self`: そのメソッドが受け取る「値そのもの」
+- `Self`: その `impl` の対象になっている「型そのもの」
+
+この例では:
+
+- `self` は `Point` の値、またはその参照
+- `Self` は `Point` 型そのもの
+
+なので:
+
+```rust
+fn new(x: i32, y: i32) -> Self
+```
+
+は
+
+```rust
+fn new(x: i32, y: i32) -> Point
+```
+
+と同じ意味です。
+
+### `&self`: 読み取り専用
+
+```rust
+fn norm1(&self) -> i32 {
+    self.x.abs() + self.y.abs()
+}
+```
+
+`&self` は「`self` を不変参照で借りる」です。
+
+意味:
+
+- 所有権は受け取らない
+- メソッド内で値を書き換えない
+- 呼び出し後も元の値をそのまま使える
+
+これはCの `const struct Point *self` にかなり近い感覚です。
+
+### `&mut self`: 書き換える
+
+```rust
+fn translate(&mut self, dx: i32, dy: i32) {
+    self.x += dx;
+    self.y += dy;
+}
+```
+
+`&mut self` は「`self` を可変参照で借りる」です。
+
+意味:
+
+- 所有権は受け取らない
+- メソッド内で値を書き換えられる
+- 呼び出し元でも同じ値が更新された状態で残る
+
+このとき呼び出し側の変数も `mut` である必要があります。
+
+```rust
+let mut p = Point::new(1, 2);
+p.translate(3, 4);
+```
+
+Cの `struct Point *self` に近いですが、
+Rustでは「同時に他から安全でない形で触っていないこと」までコンパイラが見ます。
+
+### `self`: 所有権を受け取る
+
+```rust
+fn into_tuple(self) -> (i32, i32) {
+    (self.x, self.y)
+}
+```
+
+これは参照ではなく、値そのものを受け取っています。
+
+意味:
+
+- メソッドが呼び出し元から所有権を受け取る
+- 呼び出し後、元の変数は基本的に使えない
+- 値を分解したり、別の型へ変換したり、消費したいときに使う
 
 例:
 
-- `&self`: 読み取りだけ
-- `&mut self`: 書き換える
-- `self`: 所有権を受け取る
+```rust
+let p = Point::new(3, 4);
+let t = p.into_tuple();
+// p はここではもう使えない
+```
+
+これはCにはあまりない感覚です。
+Cでは値を渡すか、ポインタを渡すかを人間が管理しますが、
+Rustでは「このメソッドは対象を消費する」と型で表現できます。
+
+### どう使い分けるか
+
+最初は次の基準で十分です。
+
+- 読むだけなら `&self`
+- 中身を書き換えるなら `&mut self`
+- 呼び出し後に元の値を使わせたくない、あるいは分解して消費したいなら `self`
+
+### よくある誤解
+
+`self` は「クラスの中の特別な変数」というより、
+「その型のメソッドが受け取る第1引数の省略記法」です。
+なので、Rustのメソッドを理解するときは、
+常に「これは所有権を取っているのか、借用しているのか」を見るのが重要です。
 
 ## 11. `enum`: Rustの強み
 
