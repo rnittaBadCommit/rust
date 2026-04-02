@@ -669,7 +669,21 @@ C:
 - 詳細は `errno`
 - または出力引数に結果を書き込む
 
-Rust:
+Rustでは、成功と失敗を次のような列挙型で表します。
+
+```rust
+enum Result<T, E> {
+    Ok(T),
+    Err(E),
+}
+```
+
+意味:
+
+- `Ok(T)`: 成功した。成功時の値は `T`
+- `Err(E)`: 失敗した。失敗時の情報は `E`
+
+例えば「ファイルを読んで文字列を返す」なら、成功時は `String`、失敗時は `std::io::Error` を返したいので、型はこうなります。
 
 ```rust
 use std::fs;
@@ -679,18 +693,137 @@ fn read_file(path: &str) -> Result<String, std::io::Error> {
 }
 ```
 
-使う側:
+これは次の意味です。
+
+- 成功したら `Ok(String)`
+- 失敗したら `Err(std::io::Error)`
+
+例えば:
+
+```rust
+match read_file("hello.txt") {
+    Ok(text) => println!("success: {text}"),
+    Err(err) => println!("error: {err}"),
+}
+```
+
+### `?` を使わない形
+
+まずは、`Result` を手で展開する形を見ると分かりやすいです。
 
 ```rust
 fn main() -> Result<(), std::io::Error> {
-    let text = std::fs::read_to_string("hello.txt")?;
+    let text = match read_file("hello.txt") {
+        Ok(text) => text,
+        Err(err) => return Err(err),
+    };
+
     println!("{text}");
     Ok(())
 }
 ```
 
-`?` は「失敗ならそのまま呼び出し元へ返す」です。
+ここで起きていること:
+
+- `read_file("hello.txt")` は `Result<String, std::io::Error>` を返す
+- `Ok(text)` なら中の `String` を取り出して `text` に代入する
+- `Err(err)` なら、そのまま `main` から `Err(err)` を返して終了する
+- 最後まで成功したら `Ok(())` を返す
+
+### `?` を使う形
+
+上のコードは `?` を使うと短く書けます。
+
+```rust
+use std::fs;
+
+fn read_file(path: &str) -> Result<String, std::io::Error> {
+    fs::read_to_string(path)
+}
+
+fn main() -> Result<(), std::io::Error> {
+    let text = read_file("hello.txt")?;
+    println!("{text}");
+    Ok(())
+}
+```
+
+`?` はだいたい次の省略記法です。
+
+```rust
+let text = match read_file("hello.txt") {
+    Ok(text) => text,
+    Err(err) => return Err(err),
+};
+```
+
+つまり:
+
+- `Ok(v)` なら中身の `v` を取り出す
+- `Err(e)` なら `return Err(e)` する
+
 Cで毎回 `if (ret < 0) return ret;` と書く感覚に近いですが、かなり読みやすいです。
+
+### なぜ `main` が `Result` を返してよいのか
+
+ここは引っかかりやすい点です。
+`main` が返しているのは「ファイルの内容」ではなく、「このプログラムが成功したか失敗したか」です。
+
+```rust
+fn main() -> Result<(), std::io::Error>
+```
+
+の意味:
+
+- 成功したら `Ok(())`
+- 失敗したら `Err(std::io::Error)`
+
+ここでの `()` は「成功時に特に返したい値はない」という意味です。
+
+Rustの `main` は特別で、`Result<(), E>` を返せます。
+ランタイムがそれを受け取って、
+
+- `Ok(())` なら正常終了
+- `Err(e)` ならエラー終了
+
+として扱います。
+
+感覚としてはCの次のコードに近いです。
+
+```c
+int main(void) {
+    char *text = read_file("hello.txt");
+    if (text == NULL) {
+        return 1;
+    }
+
+    printf("%s\n", text);
+    return 0;
+}
+```
+
+対応づけると:
+
+- `return 0;` に近いもの -> `Ok(())`
+- `return 1;` に近いもの -> `Err(e)`
+
+つまり、`main` が `Result` を返せるようにしておくと、途中で失敗した処理を `?` で自然に上へ返せます。
+
+### `main` が `Result` を返さない書き方
+
+もちろん、普通の `fn main()` にして自分で処理することもできます。
+
+```rust
+fn main() {
+    match read_file("hello.txt") {
+        Ok(text) => println!("{text}"),
+        Err(err) => eprintln!("error: {err}"),
+    }
+}
+```
+
+ただしこの形では、`?` でそのままエラーを返せません。
+そのため、簡単なCLIプログラムでは `main() -> Result<(), E>` の形がよく使われます。
 
 ## 15. `Vec<T>`: Rustの動的配列
 
