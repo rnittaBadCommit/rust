@@ -32,8 +32,10 @@
 - `diary/` にノートを追加するときは `./.codex/vault_conventions.md` に従う
 - 演習を変更したときは、対象 workspace または crate で `cargo test` か `cargo check` を実行する
 - 単なる最短修正と、理解を助ける修正の両方があるなら、後者を優先する
+- レビュー時は `./.codex/review_checklist_template.md` を叩き台にする
 
 ## Supporting Notes
 
 - `./.codex/repo_workflow.md`
+- `./.codex/review_checklist_template.md`
 - `./.codex/vault_conventions.md`
