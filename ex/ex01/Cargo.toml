@@ -1,0 +1,10 @@
+[workspace]
+members = [
+    "00_strlen",
+    "01_max_option",
+    "02_stack",
+    "03_line_count",
+    "04_value_enum",
+]
+
+resolver = "2"

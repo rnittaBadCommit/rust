@@ -1,0 +1,11 @@
+[workspace]
+members = [
+    "00_split_key_value",
+    "01_clamp_scores",
+    "02_stack",
+    "03_packet",
+    "04_nonempty_line_count",
+]
+
+resolver = "2"
+

@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "00_animal",
+    "01_display_point",
+]
+
+resolver = "2"
