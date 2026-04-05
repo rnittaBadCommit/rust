@@ -12,7 +12,18 @@ pub enum Packet {
 /// - `&Packet` を受け取り、借用のまま読む
 #[allow(unused_variables)]
 pub fn describe(p: &Packet) -> String {
-    todo!("`Packet` の種類ごとに説明文字列を返してください");
+    // todo!("`Packet` の種類ごとに説明文字列を返してください");
+    match p {
+        Packet::Ping => String::from("ping"),
+        Packet::Message(message) => String::from("msg: ") + message,
+        Packet::Move { x, y } => {
+            return String::from("move to (") // 練習（検証）のために、ここでreturnでも行けるのか試してみる
+                + x.to_string().as_str()
+                + ", "
+                + y.to_string().as_str()
+                + ")";
+        }
+    }
 }
 
 #[cfg(test)]
@@ -36,4 +47,3 @@ mod tests {
         assert_eq!(describe(&packet), "move to (3, -1)");
     }
 }
-
