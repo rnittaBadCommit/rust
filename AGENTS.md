@@ -10,13 +10,32 @@
 - Rust の概念説明では、必要に応じて C と比較する
 - 抽象論よりも、小さく実行できる例と直接的な説明を優先する
 
+## Startup Read
+
+- このディレクトリで Codex を起動したら、最初に `AGENTS.md` に加えて `.codex/` 配下と `knowledge/` 配下の内容を読む
+- `.codex/` 配下は、このリポジトリでの運用ルールと補助メモとして扱う
+- `knowledge/` 配下は、利用者の現在の Rust に関する知識として扱う
+- 起動時に読みやすいよう、`.codex/` と `knowledge/` の README や索引は必要に応じて更新する
+
 ## Repository Map
 
 - `rust_from_c_guide.md`: C 経験者向けの主教材
+- `.codex/`: Codex が最初に読む運用ルールと補助メモ
+- `knowledge/`: 利用者の現在の Rust 知識を整理して蓄積する知識ベース
 - `diary/`: Obsidian 形式の学習ノート、テンプレート、進捗管理
 - `ex/`: 手を動かすための演習集
   - `ex/ex01`, `ex/ex02_traits`, `ex/ex03_review` はそれぞれ独立した Cargo workspace
   - リポジトリ直下に Cargo workspace はない前提で扱う
+
+## Knowledge Management
+
+- `knowledge/` 配下の内容は、利用者の現在の Rust に関する知識として扱う
+- Codex への質問、コードレビュー、説明、修正を通して再利用価値のある新しい知識や考え方が出てきたら、`knowledge/` 配下へ整理して追加する
+- `knowledge/` 配下の情報は、読み返しやすさを優先してファイルを適切に分割・統合する
+- 整理しやすい場合は、`knowledge/` 配下にサブディレクトリを作ってよい
+- 「習いはしたが、まだしっかり身についていない知識」は `knowledge/not_yet_internalized/` に保存する
+- ただし `knowledge/not_yet_internalized/` への保存は、利用者が明示した場合に限る
+- 利用者の要望のうち、その場限りではなく次回以降も有効そうなものがあれば、自動読込される Codex 設定へ追加するかを提案する
 
 ## Working Rules
 
@@ -37,6 +56,7 @@
 
 ## Supporting Notes
 
+- `./.codex/README.md`
 - `./.codex/repo_workflow.md`
 - `./.codex/review_checklist_template.md`
 - `./.codex/vault_conventions.md`
