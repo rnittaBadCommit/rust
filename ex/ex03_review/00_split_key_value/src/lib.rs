@@ -23,7 +23,7 @@ pub fn split_key_value_2(line: &str) -> Option<(&str, &str)> {
         it.next();
         it.as_str()
     };
-    if value.is_empty() {
+    if key.is_empty() || value.is_empty() {
         return None;
     }
     Some((key, value))
