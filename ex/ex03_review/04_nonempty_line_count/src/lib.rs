@@ -1,4 +1,4 @@
-use std::io;
+use std::{fs::read_to_string, io};
 
 /// 空行と空白だけの行を除いて、ファイル中の行数を数える課題です。
 ///
@@ -8,7 +8,9 @@ use std::io;
 /// - `trim()` してから空かどうかを見る
 #[allow(unused_variables)]
 pub fn count_nonempty_lines(path: &str) -> Result<usize, io::Error> {
-    todo!("ファイルを読んで、空行と空白行を除いた行数を返してください");
+//  todo!("ファイルを読んで、空行と空白行を除いた行数を返してください");
+    let content = read_to_string(path)?;
+    content.split('\n').filter(|s| s.is_empty() == false);
 }
 
 #[cfg(test)]
@@ -27,4 +29,3 @@ mod tests {
         assert!(count_nonempty_lines(path).is_err());
     }
 }
-
