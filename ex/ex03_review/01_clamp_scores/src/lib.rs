@@ -5,9 +5,26 @@
 /// - 100超は100にする
 /// - それ以外はそのままにする
 /// - 新しい `Vec` は作らない
+
 #[allow(unused_variables)]
 pub fn clamp_scores(xs: &mut Vec<i32>) {
-    todo!("`xs` の各要素をその場で補正してください");
+    for x in xs {
+        if *x < 0 {
+            *x = 0;
+        } else if *x > 100 {
+            *x = 100;
+        }
+    }
+}
+
+pub fn clamp_scores_2(xs: &mut Vec<i32>) {
+    xs.iter_mut().for_each(|x| {
+        if *x < 0 {
+            *x = 0;
+        } else if *x > 100 {
+            *x = 100;
+        };
+    });
 }
 
 #[cfg(test)]
@@ -35,4 +52,3 @@ mod tests {
         assert!(xs.is_empty());
     }
 }
-
