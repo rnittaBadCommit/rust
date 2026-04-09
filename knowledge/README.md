@@ -4,7 +4,15 @@
 
 ## Index
 
+- `array_and_slice.md`: 配列 `[T; N]` とスライス `[T]` / `&[T]` の違い。`&[T]` を C の `T* + len` と対比して整理
+- `attributes_and_derive.md`: `#[derive(Debug)]`、属性 `#[...]`、`Copy` / `Clone` をどう読むか
+- `for_and_intoiterator.md`: `for x in xs`, `for x in &xs`, `for x in xs.iter()` の違いと、`IntoIterator` / `Iterator` / `iter()` の役割分担
+- `impl_lifetimes_and_associated_types.md`: `impl<'a>`, `type IntoIter = ...`, `Self::IntoIter` の読み方
+- `module_paths_and_use.md`: `std::io::Error` のようなパスと `use` の役割
+- `patterns_and_while_let.md`: `Some(v)`, `Ok(x)`, `(i, x)`, `while let` の共通する読み方
 - `rust_from_c_guide.md`: C 経験者向けの主教材
+- `trait_struct_and_trait_object.md`: `trait` と `struct` の役割の違い、`trait bound` と `trait object` の使い分け
+- `where_clause.md`: `where` 句の役割と trait bound の書き場所の違い
 - `not_yet_internalized/trait_basics.md`: trait の基礎整理。`trait`, `trait bound`, `impl Trait for Type`, `Add<Output = T>` を分解したノート
 
 ## Rule
