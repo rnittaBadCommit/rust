@@ -1,17 +1,21 @@
-fn main() {
-    let mut v = vec![10, 20, 30];
 
-    let mut v2 = &mut v;
-    let mut v3 = v2;
-
-    let mut x = 42;
-    {
-        let y = &mut x;
-
-        let mut z = 1;
-        z = y;
-        println!("{z}");
+fn sum(xs: [i32]) -> i32 {
+    let mut sum = 0;
+    for x in xs {
+        sum += x;
     }
-    x = 10;
-    println!("{x}");
+    sum
+}
+
+fn main() {
+
+    println!("{}", sum([1, 2, 3]));
+
+    let x = 10;
+    let y = &x;
+
+    if y == 10 {
+        println!("hi");
+    }
+
 }
