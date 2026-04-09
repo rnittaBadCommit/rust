@@ -10,18 +10,26 @@ pub enum Value {
 /// Rustでは `match` で全パターンを安全に処理できます。
 #[allow(unused_variables)]
 pub fn describe(value: &Value) -> String {
-    todo!("`match` を使って値を説明する文字列を返してください");
+    // todo!("`match` を使って値を説明する文字列を返してください");
+    match value {
+        Value::Float(f) => String::from("float: ") + &f.to_string(),
+        Value::Int(i) => String::from("int: ") + &i.to_string(),
+    }
 }
 
 /// Intなら 1 加算し、Floatなら 1.0 加算して返します。
 #[allow(unused_variables)]
 pub fn add_one(value: Value) -> Value {
-    todo!("`match` を使って値に応じた加算をしてください");
+    // todo!("`match` を使って値に応じた加算をしてください");
+    match value {
+        Value::Float(f) => Value::Float(f + 1.0),
+        Value::Int(i) => Value::Int(i + 1),
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{add_one, describe, Value};
+    use super::{Value, add_one, describe};
 
     #[test]
     fn describe_int() {

@@ -7,32 +7,38 @@ pub struct Stack {
 impl Stack {
     #[allow(unused_variables)]
     pub fn new() -> Self {
-        todo!("空の Stack を返してください");
+        // todo!("空の Stack を返してください");
+        Stack { data: Vec::new() }
     }
 
     #[allow(unused_variables)]
     pub fn push(&mut self, value: i32) {
-        todo!("内部の Vec<i32> に value を積んでください");
+        // todo!("内部の Vec<i32> に value を積んでください");
+        self.data.push(value);
     }
 
     #[allow(unused_variables)]
     pub fn pop(&mut self) -> Option<i32> {
-        todo!("一番上の要素を取り出してください。空なら None です");
+        // todo!("一番上の要素を取り出してください。空なら None です");
+        self.data.pop()
     }
 
     #[allow(unused_variables)]
     pub fn peek(&self) -> Option<&i32> {
-        todo!("一番上の要素への参照を返してください。空なら None です");
+        // todo!("一番上の要素への参照を返してください。空なら None です");
+        self.data.last()
     }
 
     #[allow(unused_variables)]
     pub fn len(&self) -> usize {
-        todo!("現在の要素数を返してください");
+        // todo!("現在の要素数を返してください");
+        self.data.len()
     }
 
     #[allow(unused_variables)]
     pub fn is_empty(&self) -> bool {
-        todo!("空かどうかを返してください");
+        // todo!("空かどうかを返してください");
+        self.data.is_empty()
     }
 }
 

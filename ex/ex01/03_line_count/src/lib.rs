@@ -8,7 +8,10 @@ use std::io;
 /// - `text.lines().count()` で行数を数える
 #[allow(unused_variables)]
 pub fn count_lines(path: &str) -> Result<usize, io::Error> {
-    todo!("ファイルを読んで行数を返してください");
+    // todo!("ファイルを読んで行数を返してください");
+    let text = std::fs::read_to_string(path)?;
+
+    Ok(text.lines().count())
 }
 
 #[cfg(test)]

@@ -5,7 +5,17 @@
 /// - `len()` は文字数ではなくバイト数
 #[allow(unused_variables)]
 pub fn my_strlen(s: &str) -> usize {
-    todo!("`&str` を受け取り、バイト数を返してください");
+    // todo!("`&str` を受け取り、バイト数を返してください");
+    let mut ret: usize = 0;
+
+    for c in s {
+        ret += 1;
+    }
+    ret
+}
+
+pub fn my_strlen_2(s: &str) -> usize {
+    s.len()
 }
 
 #[cfg(test)]
