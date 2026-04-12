@@ -12,12 +12,11 @@ fn add<T: Add<Output = T>>(a: T, b: T) -> T {
     a + b
 }
 
-fn add_2<T, U>(a: T, b: U) -> T
+fn add_2<T, U>(a: T, b: U) -> <T as Add<U>>::Output
 where
-    T: Add<Output = T>,
-    U: Add<Output = U>,
+    T: Add<U>,
 {
-    (a as U) + b
+    a + b
 }
 
 #[derive(Debug)]
@@ -40,5 +39,9 @@ impl Add for Point {
 fn main() {
     println!("{}", max_of_two(1, 3));
     println!("{}", add(1, 3));
-    println!("{}", add_2(2, 3.14));
+    println!("{}", add_2(2.0, 3.14));
+
+    let p1 = Point { x: 1, y: 2 };
+    let p2 = Point { x: 3, y: 4 };
+    println!("{:?}", p1 + p2);
 }

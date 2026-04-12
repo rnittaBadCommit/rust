@@ -10,19 +10,18 @@ pub struct Cat;
 
 impl Animal for Dog {
     fn speak(&self) -> &'static str {
-        todo!("Dog が鳴く文字列を返してください");
+        "wan"
     }
 }
 
 impl Animal for Cat {
     fn speak(&self) -> &'static str {
-        todo!("Cat が鳴く文字列を返してください");
+        "nyan"
     }
 }
 
-#[allow(unused_variables)]
 pub fn speak_once<T: Animal>(animal: &T) -> &'static str {
-    todo!("`T: Animal` を使って speak を1回呼んでください");
+    animal.speak()
 }
 
 #[cfg(test)]

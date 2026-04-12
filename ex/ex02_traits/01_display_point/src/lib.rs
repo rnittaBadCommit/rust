@@ -7,15 +7,13 @@ pub struct Point {
 }
 
 impl fmt::Display for Point {
-    #[allow(unused_variables)]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        todo!("`(x, y)` の形で表示してください");
+        write!(f, "({}, {})", self.x, self.y)
     }
 }
 
-#[allow(unused_variables)]
 pub fn render<T: fmt::Display>(value: &T) -> String {
-    todo!("`T: Display` を使って文字列に変換してください");
+    value.to_string()
 }
 
 #[cfg(test)]
