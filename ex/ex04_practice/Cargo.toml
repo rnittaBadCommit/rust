@@ -1,0 +1,15 @@
+[workspace]
+members = [
+    "00_borrowed_len",
+    "01_append_exclamation",
+    "02_take_and_report",
+    "03_longer_len",
+    "04_count_positive",
+    "05_negate_all",
+    "06_take_last",
+    "07_duplicate_last",
+    "08_first_word",
+    "09_split_once_colon",
+]
+
+resolver = "2"
