@@ -1,0 +1,15 @@
+[workspace]
+members = [
+    "10_middle_two",
+    "11_max_slice",
+    "12_reverse_in_place",
+    "13_collect_lengths",
+    "14_join_nonempty",
+    "15_drop_empty",
+    "16_counter",
+    "17_rectangle",
+    "18_bank_account",
+    "19_point",
+]
+
+resolver = "2"
