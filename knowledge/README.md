@@ -14,6 +14,7 @@
 - `option_filter_and_iterator_filter.md`: `Iterator::filter()` と `Option::filter()` の違い、`split_once(...).filter(...)` の読み方
 - `patterns_and_while_let.md`: `Some(v)`, `Ok(x)`, `(i, x)`, `while let` の共通する読み方
 - `rust_from_c_guide.md`: C 経験者向けの主教材
+- `same_type_as_another_variable.md`: 別の変数と同じ型にしたいときの考え方。stable Rust には `typeof(expr)` がなく、型推論、型エイリアス、ジェネリクスをどう使い分けるか
 - `trait_struct_and_trait_object.md`: `trait` と `struct` の役割の違い、`trait bound` と `trait object` の使い分け
 - `unwrap_and_expect.md`: `unwrap()` / `expect()` の意味、`panic`、`?` との違い、使いどころ
 - `where_clause.md`: `where` 句の役割と trait bound の書き場所の違い

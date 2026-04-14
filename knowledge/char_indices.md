@@ -60,6 +60,37 @@ for (i, ch) in s.char_indices() {
 
 のようなスライスに使えます。
 
+## `size_of::<char>()` と `len_utf8()` は別物
+
+ここは混ざりやすいので、分けて覚えるのが大事です。
+
+```rust
+use std::mem::size_of;
+
+assert_eq!(size_of::<char>(), 4); // Rust の char は常に 4 byte
+assert_eq!(':'.len_utf8(), 1);    // でも UTF-8 では 1 byte
+assert_eq!('あ'.len_utf8(), 3);   // UTF-8 では 3 byte
+```
+
+意味は次です。
+
+- `size_of::<char>()` は、Rust の `char` 型そのものの大きさ
+- `len_utf8()` は、その文字を UTF-8 で文字列に入れたときのバイト数
+
+`&str` のスライス境界に必要なのは、
+`size_of::<char>()` ではなく
+`len_utf8()` や `char_indices()` が返すバイト位置です。
+
+たとえば区切り文字の直後を取りたいなら:
+
+```rust
+let end = i + ch.len_utf8();
+let right = &s[end..];
+```
+
+のように書くと、
+ASCII 1 byte の文字でも、複数 byte の Unicode 文字でも同じ形で扱えます。
+
 ## `is_whitespace()` と組み合わせる例
 
 ```rust
