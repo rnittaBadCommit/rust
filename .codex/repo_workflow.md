@@ -10,6 +10,7 @@
 - `rust_from_c_guide.md`: 主教材
 - `rust_review_hints.md`: 復習用ヒント
 - `rust_review_questions.md`: 復習用の問い
+- `the_book/`: Rust 公式 The Book を章ごとに進める作業ディレクトリ
 - `diary/`: 学習日記、トピック整理、コード断片、テンプレート
 - `ex/`: 演習と確認用 workspace
 
