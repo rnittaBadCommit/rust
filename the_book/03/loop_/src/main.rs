@@ -1,4 +1,10 @@
 fn main() {
+    for number in (1..4) {
+        println!("{number}");
+    }
+    for number in (1..4).rev() {
+        println!("{number}");
+    }
     let mut count = 0;
     let x = 'counting_up: loop {
         println!("count = {count}");
