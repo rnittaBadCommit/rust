@@ -7,3 +7,4 @@
 ## Index
 
 - `trait_basics.md`: trait の基礎整理。`T: Trait`、`impl Trait for Type`、関連型 `Output` の意味を小さく分けて説明したノート
+- `the_book_ch07_onward.md`: The Rust Programming Language 日本語版の 7章以降について、まだ曖昧な知識として章別に整理したノート

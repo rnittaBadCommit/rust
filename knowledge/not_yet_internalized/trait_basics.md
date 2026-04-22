@@ -1,6 +1,6 @@
 # Trait Basics
 
-このノートは、`knowledge/rust_from_c_guide.md` の trait 周りを読んだあとに、
+このノートは、`knowledge/traits_generics_and_iterators.md` の trait 周りを読んだあとに、
 まだ曖昧になりやすい点を切り出して整理するためのものです。
 
 ## まず一言で

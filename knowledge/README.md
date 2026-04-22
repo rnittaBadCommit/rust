@@ -4,21 +4,14 @@
 
 ## Index
 
-- `array_and_slice.md`: 配列 `[T; N]` とスライス `[T]` / `&[T]` の違い。`&[T]` を C の `T* + len` と対比して整理
-- `char_indices.md`: `char_indices()` が返すバイト位置、`chars().enumerate()` との違い、`is_whitespace()` と組み合わせて `&str` を切る考え方
-- `crate_package_workspace.md`: `crate`, `package`, `workspace` の違いと、binary crate / library crate / `crate::` の読み方
-- `attributes_and_derive.md`: `#[derive(Debug)]`、属性 `#[...]`、`Copy` / `Clone` をどう読むか
-- `for_and_intoiterator.md`: `for x in xs`, `for x in &xs`, `for x in xs.iter()` の違いと、`IntoIterator` / `Iterator` / `iter()` の役割分担
-- `impl_lifetimes_and_associated_types.md`: `impl<'a>`, `type IntoIter = ...`, `Self::IntoIter` の読み方
-- `module_paths_and_use.md`: `std::io::Error` のようなパスと `use` の役割
-- `option_filter_and_iterator_filter.md`: `Iterator::filter()` と `Option::filter()` の違い、`split_once(...).filter(...)` の読み方
-- `patterns_and_while_let.md`: `Some(v)`, `Ok(x)`, `(i, x)`, `while let` の共通する読み方
-- `rust_from_c_guide.md`: C 経験者向けの主教材
-- `same_type_as_another_variable.md`: 別の変数と同じ型にしたいときの考え方。stable Rust には `typeof(expr)` がなく、型推論、型エイリアス、ジェネリクスをどう使い分けるか
-- `trait_struct_and_trait_object.md`: `trait` と `struct` の役割の違い、`trait bound` と `trait object` の使い分け
-- `unwrap_and_expect.md`: `unwrap()` / `expect()` の意味、`panic`、`?` との違い、使いどころ
-- `where_clause.md`: `where` 句の役割と trait bound の書き場所の違い
+- `foundations_and_cargo.md`: Rust の全体像、`rustc` / `cargo`、crate / package / workspace、変数、基本型、式、関数、制御構文、学習順序
+- `ownership_memory_and_strings.md`: 所有権、ムーブ、借用、`Copy` / `Clone`、配列、slice、`String` / `&str`、UTF-8、`char_indices()`、`Vec` / `Box` のメモリ像、lifetime の基礎
+- `data_patterns_and_errors.md`: `struct`、`impl`、`self` / `Self`、属性と `derive`、`enum`、`match`、pattern、`Option<T>`、`Result<T, E>`、`?`、`unwrap` / `expect`、panic
+- `modules_and_paths.md`: module、path、`crate::`、`super::`、privacy、`pub`、`use`、`pub use`、ファイル分割
+- `traits_generics_and_iterators.md`: generics、trait、trait bound、`where`、関連型、`impl Trait`、trait object、`Sized` / `?Sized`、`for` / `IntoIterator`、iterator、closure
+- `the_book_early_topics.md`: The Rust Programming Language 日本語版の 1〜6章から、項目別ノートへの対応と補足だけを残した索引
 - `not_yet_internalized/trait_basics.md`: trait の基礎整理。`trait`, `trait bound`, `impl Trait for Type`, `Add<Output = T>` を分解したノート
+- `not_yet_internalized/the_book_ch07_onward.md`: The Rust Programming Language 日本語版の 7章以降について、まだ曖昧な知識として章別に整理
 
 ## Rule
 
