@@ -14,7 +14,10 @@
 
 ## Existing Materials
 
-- [[rust_from_c_guide]]
+- [[knowledge/foundations_and_cargo]]
+- [[knowledge/ownership_memory_and_strings]]
+- [[knowledge/data_patterns_and_errors]]
+- [[knowledge/traits_generics_and_iterators]]
 - [[ex01/README]]
 - [[ex02_traits/README]]
 
@@ -28,6 +31,8 @@
 - [[daily/2026-04-12]]
 - [[daily/2026-04-14]]
 - [[daily/2026-04-17]]
+- [[daily/2026-04-21]]
+- [[daily/2026-04-22]]
 
 ## Workflow
 
