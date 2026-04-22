@@ -74,7 +74,13 @@ rand = "0.8.5"
 
 `src/lib.rs` から始まるものは library crate で、他の crate から使われる部品になります。
 
+binary crate は「最終成果物として実行ファイルを作る crate」です。C の `.o` のようなオブジェクトファイルを指す言葉ではありません。
+
 1 個の package は、0 個か 1 個の library crate と、0 個以上の binary crate を持てます。
+
+library crate が 1 つだけなのは、package 名で公開される主要ライブラリを 1 つに決める Cargo の設計です。複数のライブラリに分けたい場合は、通常は複数 package を workspace に置きます。
+
+Rust は基本的に crate 単位でコンパイルするため、同じ crate 内の 1 ファイルを変更すると、その crate は再コンパイル対象になります。C のように `.c` ごとの `.o` だけを差し替えるモデルとは違います。ただし依存 crate は変更がなければ再利用されます。
 
 workspace は複数 package をまとめます。
 
