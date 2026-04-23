@@ -185,6 +185,37 @@ src/
 pub mod vegetables;
 ```
 
+`mod` は C の `#include` のような「その場にファイル内容を貼り付ける操作」ではありません。
+そのファイルを crate の module tree のどこに置くかを、一度だけ宣言する操作です。
+
+例:
+
+```text
+src/
+  main.rs
+  garden.rs
+```
+
+```rust
+// main.rs
+mod garden;
+
+fn main() {
+    crate::garden::water();
+}
+```
+
+```rust
+// garden.rs
+pub fn water() {}
+```
+
+この場合、`mod garden;` によって `garden.rs` の中身は `crate::garden` という module になります。
+他の場所から使うときは、もう一度 `mod garden;` と書くのではなく、`crate::garden::water()` のように path で参照します。
+
+別ファイルから同じ `garden.rs` を使いたくなったとしても、`mod garden;` を複数箇所に書いて読み直すのではありません。
+`mod` は「このファイルをプロジェクトに読み込む」よりも、「この名前の module がここにある」と crate root から木構造に登録する宣言だと考えると分かりやすいです。
+
 ## package, crate, module の切り分け
 
 - package: Cargo の管理単位。`Cargo.toml` で見る
