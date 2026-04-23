@@ -191,6 +191,27 @@ enum IpAddr {
 
 enum にも `impl` でメソッドを定義できます。
 
+`Vec<Enum>` が可能なのは、variant が違っても全体としては同じ 1 つの型だからです。
+
+```rust
+enum Value {
+    Int(i32),
+    Text(String),
+}
+
+let values: Vec<Value> = vec![
+    Value::Int(10),
+    Value::Text(String::from("hello")),
+];
+```
+
+`Value::Int(10)` と `Value::Text(...)` は別々の型ではなく、どちらも `Value` 型の値です。
+`Vec<T>` は「同じ `T` を連続して持つ」ので、`Vec<Value>` として格納できます。
+
+メモリ上は、Rust の enum は安全な tagged union に近く、どの variant かを示す tag と、variant の中身を置く領域を持ちます。
+`Value` 型全体のサイズは、基本的に一番大きい variant を収められる大きさに tag などを加えたものになります。
+そのため `Vec<Value>` の各要素は同じサイズで連続配置できます。
+
 ## `match`
 
 ```rust
