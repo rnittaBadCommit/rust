@@ -1,5 +1,5 @@
 [package]
-name = "book08_pig_latin"
+name = "book08_median_mode"
 version = "0.1.0"
 edition = "2024"
 

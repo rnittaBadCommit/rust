@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "median_mode",
+    "word_count",
+    "pig_latin",
+]
+resolver = "3"

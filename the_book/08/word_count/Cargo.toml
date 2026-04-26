@@ -1,5 +1,5 @@
 [package]
-name = "book08_pig_latin"
+name = "book08_word_count"
 version = "0.1.0"
 edition = "2024"
 
