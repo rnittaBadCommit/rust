@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rust 30日学習計画</title>
+    <link rel="stylesheet" href="rust_30day_plan_viewer.css">
+    <script src="rust_30day_plan_data.js"></script>
+    <script src="rust_30day_plan_viewer.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell" id="app">
+      <header class="topbar">
+        <div class="title-group">
+          <p class="eyebrow" id="planRange">読み込み中</p>
+          <h1 id="planTitle">Rust 30日学習計画</h1>
+        </div>
+        <div class="top-actions">
+          <button class="secondary-button" type="button" id="printButton">印刷</button>
+          <button class="secondary-button danger" type="button" id="resetButton">進捗リセット</button>
+        </div>
+      </header>
+
+      <section class="status-panel" id="statusPanel" aria-live="polite">
+        <p>計画データを読み込んでいます。</p>
+      </section>
+
+      <div id="content" hidden>
+        <section class="overview-band" aria-labelledby="overviewTitle">
+          <div>
+            <h2 id="overviewTitle">全体像</h2>
+            <p class="overview-copy" id="overviewCopy"></p>
+          </div>
+          <div class="progress-block">
+            <div class="progress-head">
+              <span id="progressText">0 / 300h</span>
+              <span id="todayText">Day 1</span>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <span class="progress-fill" id="progressFill"></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="control-band" aria-label="表示条件">
+          <label class="field">
+            <span>検索</span>
+            <input id="searchInput" type="search" autocomplete="off" placeholder="例: trait, CLI, 復習">
+          </label>
+          <label class="field">
+            <span>期間</span>
+            <select id="phaseSelect"></select>
+          </label>
+          <label class="field">
+            <span>分類</span>
+            <select id="categorySelect"></select>
+          </label>
+          <div class="segmented" role="group" aria-label="密度">
+            <button type="button" class="segment is-active" data-density="normal">標準</button>
+            <button type="button" class="segment" data-density="compact">圧縮</button>
+          </div>
+          <label class="check-field">
+            <input id="dimDoneInput" type="checkbox">
+            <span>完了を薄く</span>
+          </label>
+        </section>
+
+        <section class="legend-band" aria-label="分類凡例">
+          <div class="legend" id="legend"></div>
+        </section>
+
+        <section class="week-stats" aria-label="週別内訳" id="weekStats"></section>
+
+        <section class="success-band" aria-labelledby="successTitle">
+          <h2 id="successTitle">到達基準</h2>
+          <ul id="successList"></ul>
+        </section>
+
+        <section class="timeline" aria-label="30日タイムライン" id="timeline"></section>
+
+        <section class="resources-band" aria-labelledby="resourcesTitle">
+          <h2 id="resourcesTitle">参照先</h2>
+          <div class="resource-list" id="resourceList"></div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>
