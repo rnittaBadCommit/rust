@@ -268,6 +268,58 @@ fn add(a: i32, b: i32) -> i32 {
 
 所有権が不要なら、引数は `&T` や `&str` にすると呼び出し側の値を消費しません。
 
+## `main` の戻り値と `Termination`
+
+Rust の `main` は、任意の型を返せるわけではありません。
+`main` の戻り値型は `std::process::Termination` を実装している必要があります。
+
+`Termination` は、`main` の戻り値をプロセス終了コードへ変換するための trait です。
+
+```rust
+pub trait Termination {
+    fn report(self) -> std::process::ExitCode;
+}
+```
+
+終了コードを明示して返したいときは `ExitCode` を使います。
+
+```rust
+use std::process::ExitCode;
+
+fn main() -> ExitCode {
+    ExitCode::from(13)
+}
+```
+
+C の `int main(void) { return 13; }` に近い意図ですが、Rust では `i32` を直接 `main` から返せません。
+
+```rust
+fn main() -> i32 {
+    13
+}
+```
+
+これは `i32` が `Termination` を実装していないためエラーになります。
+
+その場で即終了したい場合は `std::process::exit` も使えます。
+
+```rust
+fn main() {
+    std::process::exit(13);
+}
+```
+
+`Result` も `Termination` を実装しているので、次のような `main` も書けます。
+
+```rust
+fn main() -> Result<(), std::io::Error> {
+    std::fs::read_to_string("hello.txt")?;
+    Ok(())
+}
+```
+
+成功なら終了コード `0`、失敗ならエラーを表示して失敗終了します。
+
 ## 数当てゲームで出てくる初期要素
 
 The Book 2章の数当てゲームは、最初にいろいろな Rust 要素を浅く見せます。
