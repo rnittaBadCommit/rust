@@ -412,6 +412,20 @@ fn read_file(path: &str) -> Result<String, std::io::Error> {
 
 C の「戻り値で成功/失敗、詳細は `errno`」に近い役割ですが、成功値と失敗値の型が明示されます。
 
+`Err(e)` は文脈で意味が変わります。
+
+`match` の左側にある `Err(e) => ...` は、「`Result` が `Err` variant なら、中身のエラー値を `e` という変数名で取り出す」というパターンです。
+
+```rust
+match File::open("hello.txt") {
+    Ok(file) => file,
+    Err(e) => return Err(e),
+}
+```
+
+このとき `File::open` の戻り値は `Result<File, std::io::Error>` なので、`Err(e)` にマッチした時点で `e` の型は `std::io::Error` です。
+右側の `return Err(e)` は、その `io::Error` をもう一度 `Err(...)` に包んで、関数の戻り値型 `Result<String, io::Error>` として返しています。
+
 ## `?`
 
 `?` は `Result` のエラーを呼び出し元へ返す省略記法です。
@@ -429,11 +443,110 @@ fn main() -> Result<(), std::io::Error> {
 ```rust
 let text = match read_file("hello.txt") {
     Ok(text) => text,
-    Err(err) => return Err(err),
+    Err(err) => return Err(std::convert::From::from(err)),
 };
 ```
 
 `?` は `Err` を返すとき、必要に応じて `From` によるエラー型変換も使います。
+
+`File::open` も `read_to_string` も `io::Error` を返し、現在の関数も `Result<_, io::Error>` を返す場合は、変換は実質そのままです。
+
+```rust
+use std::fs::File;
+use std::io::{self, Read};
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    let mut username_file = File::open("hello.txt")?;
+    let mut username = String::new();
+    username_file.read_to_string(&mut username)?;
+    Ok(username)
+}
+```
+
+この例では、失敗時は概念的に `return Err(io_error)` です。
+
+`From` が効くのは、複数種類のエラーを 1 つのエラー型にまとめたいときです。
+
+```rust
+use std::fs::File;
+use std::io::{self, Read};
+
+#[derive(Debug)]
+enum AppError {
+    Io(io::Error),
+    Parse(std::num::ParseIntError),
+}
+
+impl From<io::Error> for AppError {
+    fn from(err: io::Error) -> Self {
+        AppError::Io(err)
+    }
+}
+
+impl From<std::num::ParseIntError> for AppError {
+    fn from(err: std::num::ParseIntError) -> Self {
+        AppError::Parse(err)
+    }
+}
+
+fn read_number() -> Result<i32, AppError> {
+    let mut file = File::open("number.txt")?;
+    let mut text = String::new();
+    file.read_to_string(&mut text)?;
+
+    let n: i32 = text.trim().parse()?;
+    Ok(n)
+}
+```
+
+この場合、`File::open(...)?` や `read_to_string(...)?` の失敗は `AppError::Io` に変換され、`parse()?` の失敗は `AppError::Parse` に変換されます。
+
+C で言えば、下位処理ごとの失敗理由を、上位関数が返す共通のエラー型へ詰め替える処理です。
+
+`Option<T>` を `Result<T, E>` に変換したいときは `ok_or` を使います。
+
+```rust
+fn first_char(text: &str) -> Result<char, String> {
+    let line = text
+        .lines()
+        .next()
+        .ok_or(String::from("line not found"))?;
+
+    let ch = line
+        .chars()
+        .next()
+        .ok_or(String::from("char not found"))?;
+
+    Ok(ch)
+}
+```
+
+対応は次です。
+
+```rust
+Some(v) -> Ok(v)
+None    -> Err(error)
+```
+
+`Result<T, E>` を `Option<T>` に変換したいときは `ok` を使います。
+
+```rust
+use std::fs;
+
+fn read_text() -> Option<String> {
+    let text = fs::read_to_string("hello.txt").ok()?;
+    Some(text)
+}
+```
+
+対応は次です。
+
+```rust
+Ok(v)  -> Some(v)
+Err(_) -> None
+```
+
+`ok()` はエラー情報を捨てるので、失敗理由が不要なときだけ使います。
 
 `main() -> Result<(), E>` は、「プログラムが成功したか失敗したか」を返す形です。成功時に返したい値がないので `Ok(())` を返します。
 
